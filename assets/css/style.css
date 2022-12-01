@@ -1,0 +1,152 @@
+#background {
+    background-color: #f8f0e8;
+}
+
+#team {
+    background-color: #ceeaee;
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #000000aa;
+    margin: 1rem;
+}
+
+#team-title {
+    font-size: large;
+}
+
+#team-list {
+    font-size: large;
+}
+
+#title-area {
+    font-family: 'Noto Sans', sans-serif;
+    color: black;
+    margin: 0 auto;
+    margin-top: 1rem;
+    width: 50%;
+    height: 15%;
+    text-align: center;
+}
+
+#title {
+    font-size: 40px;
+    font: bold;
+}
+
+#subtitle {
+    font-size: 20px;
+    font: normal;
+}
+
+#uploader {
+    height: 40%;
+    margin: 5% 35% 2% 35%;
+    text-align: center;
+}
+
+#result-area {
+    border-radius: 45px;
+    height: fit-content;
+    width: fit-content;
+    padding: 1rem;
+    background-color: rgb(245, 214, 173);
+    margin: auto;
+}
+
+#recomendations-area {
+    border-radius: 45px;
+    height: fit-content;
+    width: fit-content;
+    padding: 1rem;
+    background-color: rgb(174, 173, 245);
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#rec {
+    font-size: larger;
+}
+
+#result-title {
+    font-family: 'Anton', sans-serif;
+    font-size: large;
+}
+
+/**************** SELECT *****************/
+
+.content-select {
+    max-width: 250px;
+    position: relative;
+}
+
+.content-select select {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 7px 10px;
+    height: 42px;
+    outline: 0;
+    border: 0;
+    border-radius: 0;
+    background: #f0f0f0d0;
+    color: #747474;
+    font-size: 1em;
+    font-family: 'Quicksand', sans-serif;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.content-select select:hover {
+    background: #d6edf1;
+}
+
+/*********************************************************/
+
+.enviar {
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #000000aa;
+    margin-bottom: 1rem;
+}
+
+.file-select {
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #000000aa;
+    margin-bottom: 1rem;
+}
+
+.file-select:hover {
+    background-color: #5227ec;
+}
+
+.file-select::before {
+    background-color: #5227ec;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    content: 'Seleccionar';
+    /* texto por defecto */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.file-select input[type="file"] {
+    opacity: 0;
+    width: 200px;
+    height: 35px;
+    display: inline-block;
+
+}
+
+#src-file1::before {
+    content: 'Seleccionar archivo .java';
+}

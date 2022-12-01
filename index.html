@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERRAMIENTA PARA TESTING</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./assets/js/main.js"></script>
+
+    <!-- BOOTSTRAP -->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;400&display=swap" rel="stylesheet">
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body id="background">
+    <div id="title-area">
+        <h1 id="title">
+            HERRAMIENTA PARA TESTING
+        </h1>
+        <h2 id="subtitle">
+            Analice su codigo
+        </h2>
+    </div>
+
+
+    <div id="uploader">
+        <form name="formulario" method="get" action="index.html" enctype="multipart/form-data">
+            <div class="file-select" id="src-file1">
+                <input type="file" name="src-file1" id="archivo" accept=".java" aria-label="Archivo" multiple=false>
+            </div>
+            <input id="btnSubmit" type="button" class="btn btn-primary enviar" value="Evaluar">
+        </form>
+    </div>
+
+    <div id="result-area">
+        <h4 id="result-title">Las lineas Totales son: <b id="lineastotales">0</b></h4>
+        <h4 id="result-title">Las lineas de Codigo son: <b id="lineascodigo"> 0</b></h4>
+        <h4 id="result-title">Las lineas de Codigo Comentadas son: <b id="lineascomentadas">0</b></h4>
+        <h4 id="result-title">El porcentaje de lineas comentadas es: <b id="lineasporcentaje">0</b></h4>
+        <h4 id="result-title">Halstead Longitud: <b id="longitud">0</b></h4>
+        <h4 id="result-title">La Complejidad Ciclomatica es: <b id="complejidad">0</b></h4>
+        <h4 id="result-title">El volumen Halstead es: <b id="volumen">0</b></h4>
+        <h4 id="result-title">Fan-in: <b id="fanIn">0</b></h4>
+        <h4 id="result-title">Fan-out: <b id="fanOut">0</b></h4>
+        <h4 id="result-title">Seleccione la función a buscar fan-in y fan-out: </h4>
+        <div class="content-select">
+            <select id="funciones" type="text">
+                <option disabled selected id="seleccion-nula">Selecciona una opción</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="recomendations-area">
+        <b>Recomendaciones:</b>
+        <ul id="rec-list">
+
+        </ul>
+
+    </div>
+
+
+    <div id="team" class="rounded bottom ">
+        <b id="team-title">Integrantes del Grupo:</b>
+        <ul id="team-list">
+            <li>Menchaca, Brian Angel Gastón</li>
+            <li>Camejo, Luciano</li>
+            <li>Carrizo, Melany Nicole</li>
+            <li>De La Cruz, Nahuel</li>
+            <li>Martín, Nicolás</li>
+            <li>Ripamonti, Franco</li>
+        </ul>
+    </div>
+
+
+    <script>
+        const fileSelector = document.getElementById('archivo');
+        let fileList;
+        fileSelector.addEventListener('change', (event) => {
+            fileList = event.target.files;
+            const file = fileList[0];
+            var fileReader = new FileReader();
+            fileReader.readAsBinaryString(file);
+
+            const vacio = document.getElementById("seleccion-nula");
+            if(vacio !== null) {
+                vacio.remove();
+            }
+
+            let opciones = document.getElementById("opciones-creadas");
+            while (opciones !== null) {
+                opciones.remove();
+                opciones = document.getElementById("opciones-creadas");
+            }
+
+            fileReader.onload = function () {
+                getFunctions(fileReader.result)
+            }
+        });
+        document.getElementById("btnSubmit").addEventListener("click", () => {
+            const file = fileList[0];
+            var fileReader = new FileReader();
+            fileReader.readAsBinaryString(file);
+            fileReader.onload = function () {
+                miModulo.nuevoArchivo(fileReader.result)
+            }
+        });
+
+        function getFunctions(texto) {
+            var i = 0
+            var contLlaves = 0
+            var listaPosiciones = []
+            var listaNombresFunciones = []
+            while (i < texto.length) {
+                if (texto[i] == '{') {
+                    contLlaves++;
+                    if (contLlaves == 2) {
+                        listaPosiciones.push(i)
+                    }
+                } else if (texto[i] == '}') {
+                    contLlaves--;
+                }
+                i++;
+            }
+            listaPosiciones.forEach(function (it) {
+                listaNombresFunciones.push(getNameFunction(it, texto))
+            })
+
+            for (var i = 0; i < listaNombresFunciones.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = listaNombresFunciones[i].join("");
+                opt.innerHTML = listaNombresFunciones[i].join(""); // whatever property it has
+                opt.setAttribute("id", "opciones-creadas");
+                // then append it to the select element
+                document.getElementById('funciones').appendChild(opt);
+            }
+        }
+
+        function getNameFunction(pos, texto) {
+            var i = pos
+            var nameFunction = []
+            while (i > 0 && texto[i] != '(') {
+                i--;
+            }
+            i--;
+            while (texto[i] == ' ') {
+                i--;
+            }
+            while (texto[i] != ' ') {
+                nameFunction.push(texto[i]);
+                i--;
+            }
+            const reversed = nameFunction.reverse()
+            return reversed
+        }
+    </script>
+</body>
+
+</html>
